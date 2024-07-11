@@ -55,7 +55,7 @@ QT版本：
 
 ✔️客户端移植到arm开发板，opencv交叉编译
 
-✔️SeetaFace`、`opencv254`的Linux环境下的编译
+✔️`SeetaFace`、`opencv254`的Linux环境下的编译
 
 😋待实现功能：
 

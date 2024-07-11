@@ -8,6 +8,14 @@
 #include "registerwin.h"
 #include "selectwin.h"
 
+//#include "xlsxdocument.h"
+//#include "xlsxchartsheet.h"
+//#include "xlsxcellrange.h"
+//#include "xlsxchart.h"
+//#include "xlsxrichstring.h"
+//#include "xlsxworkbook.h"
+//using namespace QXlsx;
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -34,6 +42,7 @@ int main(int argc, char *argv[])
                         "IF NOT EXISTS "
                         "employee("
                         "employeeID INTEGER PRIMARY KEY AUTOINCREMENT,"
+                        "department TEXT,"
                         "name VARCHAR(256),"
                         "sex VARCHAR(256),"
                         "birthday TEXT,"
@@ -56,6 +65,8 @@ int main(int argc, char *argv[])
                 "attendance("
                 "attendanceID INTEGER PRIMARY KEY AUTOINCREMENT,"
                 "employeeID INTEGER,"
+                "department TEXT,"
+                "name VARCHAR(256),"
                 "attendanceTime TimeStamp NOT NULL DEFAULT(datetime('now','localtime'))"
                 ")";
     if(!query.exec(createSql))
@@ -69,5 +80,9 @@ int main(int argc, char *argv[])
 
 //    SelectWin w2;
 //    w2.show();
+
+//    QXlsx::Document xlsx;
+//        xlsx.write("A1", "Hello Qt!"); // write "Hello Qt!" to cell(A,1). it's shared string.
+//        xlsx.saveAs("Test.xlsx"); // save the document as 'Test.xlsx'
     return a.exec();
 }

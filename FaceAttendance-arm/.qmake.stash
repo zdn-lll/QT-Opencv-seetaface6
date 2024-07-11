@@ -1,0 +1,14 @@
+QMAKE_DEFAULT_INCDIRS = \
+    /usr/5.4.0_arm/5.4.0/usr/arm-none-linux-gnueabi/include/c++/5.4.0 \
+    /usr/5.4.0_arm/5.4.0/usr/arm-none-linux-gnueabi/include/c++/5.4.0/arm-none-linux-gnueabi \
+    /usr/5.4.0_arm/5.4.0/usr/arm-none-linux-gnueabi/include/c++/5.4.0/backward \
+    /usr/5.4.0_arm/5.4.0/usr/lib/gcc/arm-none-linux-gnueabi/5.4.0/include \
+    /usr/5.4.0_arm/5.4.0/usr/lib/gcc/arm-none-linux-gnueabi/5.4.0/include-fixed \
+    /usr/5.4.0_arm/5.4.0/usr/arm-none-linux-gnueabi/include \
+    /usr/5.4.0_arm/5.4.0/usr/arm-none-linux-gnueabi/sysroot/usr/include
+QMAKE_DEFAULT_LIBDIRS = \
+    /usr/5.4.0_arm/5.4.0/usr/lib/gcc/arm-none-linux-gnueabi/5.4.0 \
+    /usr/5.4.0_arm/5.4.0/usr/lib/gcc \
+    /usr/5.4.0_arm/5.4.0/usr/arm-none-linux-gnueabi/lib \
+    /usr/5.4.0_arm/5.4.0/usr/arm-none-linux-gnueabi/sysroot/lib \
+    /usr/5.4.0_arm/5.4.0/usr/arm-none-linux-gnueabi/sysroot/usr/lib

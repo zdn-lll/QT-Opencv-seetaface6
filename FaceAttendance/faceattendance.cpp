@@ -1,6 +1,7 @@
 #include "faceattendance.h"
 #include "ui_faceattendance.h"
 
+#include <QBuffer>
 #include <QDebug>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -54,12 +55,20 @@ void FaceAttendance::timerEvent(QTimerEvent *e)
     // 把图片大小设置为显示窗口大小一样
     cv::resize(srcImgae, srcImgae, Size(ui->vdieoLb->width(), ui->vdieoLb->height()));
 
+    if(srcImgae.data == nullptr) return;
+    // 把opencv里面的Mat格式数据（BGR）转为 QT 中的（RGB）
+    cvtColor(srcImgae, srcImgae, COLOR_BGR2RGB);
+    QImage image(srcImgae.data, srcImgae.cols, srcImgae.rows, srcImgae.step1(), QImage::Format_RGB888);
+    QPixmap mmp = QPixmap::fromImage(image);
+//    mmp = mmp.scaledToWidth(ui->vdieoLb->width());
+    ui->vdieoLb->setPixmap(mmp);
+
     // 转灰度图加快检测速度
     Mat grayImage;
-    cvtColor(srcImgae, grayImage, COLOR_BGR2GRAY);
+    cvtColor(srcImgae, grayImage, COLOR_RGB2GRAY);
     // 检测人脸数据
     vector<Rect> faceRects;
-    cascade.detectMultiScale(srcImgae, faceRects);
+    cascade.detectMultiScale(srcImgae, faceRects, 1.1,3,0,cv::Size(150,150)); // 设置最小检测大小，减少性能开支
     ui->headpicLb->show();
     if(faceRects.size() > 0 && flag >= 0)
     {
@@ -72,10 +81,18 @@ void FaceAttendance::timerEvent(QTimerEvent *e)
 
         if(flag > 2 && isConnect)
         {
-            // 把Mat数据转化为QbyteArray --> 编码成jpg
-            vector<uchar> buf;
-            imencode(".jpg", srcImgae, buf);
-            QByteArray byte((const char*)buf.data(), buf.size());
+//            // 把Mat数据转化为QbyteArray --> 编码成jpg
+//            vector<uchar> buf;
+//            imencode(".jpg", srcImgae, buf);
+//            QByteArray byte((const char*)buf.data(), buf.size());
+
+            // QImage转换为QByteArray
+            QByteArray byte;
+            QBuffer buffer(&byte);
+            buffer.open(QIODevice::WriteOnly);
+            image.save(&buffer, "jpg");
+            buffer.close();
+
             // 准备发送
             quint64 backsize = byte.size();
             QByteArray sendData;
@@ -91,6 +108,7 @@ void FaceAttendance::timerEvent(QTimerEvent *e)
 
             faceMat = srcImgae(rect);
             // 保存
+            cvtColor(faceMat, faceMat, COLOR_BGR2RGB);
             imwrite("./face.jpg", faceMat);
         }
 
@@ -105,13 +123,7 @@ void FaceAttendance::timerEvent(QTimerEvent *e)
         ui->certificationWidget->hide();
     }
 
-    if(srcImgae.data == nullptr) return;
-    // 把opencv里面的Mat格式数据（BGR）转为 QT 中的（RGB）
-    cvtColor(srcImgae, srcImgae, COLOR_BGR2RGB);
-    QImage image(srcImgae.data, srcImgae.cols, srcImgae.rows, srcImgae.step1(), QImage::Format_RGB888);
-    QPixmap mmp = QPixmap::fromImage(image);
-//    mmp = mmp.scaledToWidth(ui->vdieoLb->width());
-    ui->vdieoLb->setPixmap(mmp);
+
 }
 
 void FaceAttendance::recv_data()
@@ -141,6 +153,16 @@ void FaceAttendance::recv_data()
 
     // 通过样式显示图片
     ui->headLb->setStyleSheet("border-radius:75px;border-image: url(./face.jpg);");
+    if(employeeID.isEmpty())
+    {
+        ui->certifiedImgLb->setStyleSheet("border-image: url(:/img/no.png);");
+        ui->certifiedTextLb->setText("认证失败");
+    }
+    else
+    {
+        ui->certifiedImgLb->setStyleSheet("border-image: url(:/img/yes.png);");
+        ui->certifiedTextLb->setText("认证成功");
+    }
     ui->certificationWidget->show();
 }
 

@@ -25,7 +25,14 @@ INCLUDEPATH += C:\SeetaFace\include\seeta
 LIBS += C:\opencv452\x64\mingw\lib\libopencv*
 LIBS += C:\SeetaFace\lib\libSeeta*
 
+QXLSX_PARENTPATH=./         # current QXlsx path is . (. means curret directory)
+QXLSX_HEADERPATH=./QXlsx/header/  # current QXlsx header path is ./header/
+QXLSX_SOURCEPATH=./QXlsx/source/  # current QXlsx source path is ./source/
+include(./QXlsx/QXlsx.pri)
+
+
 SOURCES += \
+    databaseoperate.cpp \
     main.cpp \
     attendancewin.cpp \
     qfaceobject.cpp \
@@ -34,6 +41,7 @@ SOURCES += \
 
 HEADERS += \
     attendancewin.h \
+    databaseoperate.h \
     qfaceobject.h \
     registerwin.h \
     selectwin.h

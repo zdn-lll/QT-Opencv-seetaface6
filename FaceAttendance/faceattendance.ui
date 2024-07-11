@@ -62,7 +62,7 @@ border-radius: 10px;</string>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="certifiedImgLb">
           <property name="minimumSize">
            <size>
             <width>40</width>
@@ -78,7 +78,7 @@ border-radius: 10px;</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="certifiedTextLb">
           <property name="styleSheet">
            <string notr="true">font: 25 16pt &quot;微软雅黑 Light&quot;;
 border:none;

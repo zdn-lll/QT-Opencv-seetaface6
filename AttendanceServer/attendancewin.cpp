@@ -60,7 +60,7 @@ void AttendanceWin::readData()
 {
     // 读取数据流
     QDataStream stream(msocket); // 把套接字绑定到数据流
-    stream.setVersion(QDataStream::Qt_5_14); // 与发动端版本相同
+    stream.setVersion(QDataStream::Qt_5_7); // 与发动端版本相同
 
     if(0 == bsize)
     {
@@ -118,15 +118,19 @@ void AttendanceWin::recv_faceid(int64_t faceid)
         // 工号 姓名 部门 时间
         // {"employeeID":"%1", "name":"%2", "department":"软件", "time":"%3"}
         QSqlRecord record = model.record(0);
-        QString sdmsg = QString("{\"employeeID\":\"%1\", \"name\":\"%2\", \"department\":\"软件\", \"time\":\"%3\"}")
+        QString sdmsg = QString("{\"employeeID\":\"%1\", \"name\":\"%2\", \"department\":\"%3\", \"time\":\"%4\"}")
                 .arg(record.value("employeeID").toString())
                 .arg(record.value("name").toString())
+                .arg(record.value("department").toString())
                 .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh::mm::ss"));
 
 
 //        model.setTable("attendance");
         // 把考勤数据插入数据库
-        QString insertSql = QString("INSERT INTO attendance(employeeID) VALUES ('%1')").arg(record.value("employeeID").toString());
+        QString insertSql = QString("INSERT INTO attendance(employeeID, department, name) VALUES ('%1', '%2', '%3')")
+                .arg(record.value("employeeID").toString())
+                .arg(record.value("department").toString())
+                .arg(record.value("name").toString());
         QSqlQuery query;
         if(!query.exec(insertSql))
         {

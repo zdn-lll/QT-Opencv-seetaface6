@@ -78,6 +78,7 @@ void RegisterWin::on_registerBt_clicked()
     model.setTable("employee"); // 设置表名
     QSqlRecord record = model.record();
     // 设置数据
+    record.setValue("department", ui->departmentEdit->text());
     record.setValue("name", ui->nameEdit->text());
     record.setValue("sex", ui->maleRb->isChecked()?"男":"女");
     record.setValue("birthday", ui->birthdayEdit->text());
@@ -110,7 +111,7 @@ void RegisterWin::on_videoSwitchBt_clicked()
     if(ui->videoSwitchBt->text() == "打开摄像头")
     {
         // 打开摄像头
-        if(cap.open(1)) // 0 打开默认摄像头
+        if(cap.open(0)) // 0 打开默认摄像头
         {
             ui->videoSwitchBt->setText("关闭摄像头");
             // 启动定时器事件
